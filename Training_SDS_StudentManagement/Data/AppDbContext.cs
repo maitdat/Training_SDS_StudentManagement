@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Training_SDS_StudentManagement.Model;
-using Training_SDS_StudentManagement.Model.DataSeeding;
+using Training_SDS_StudentManagement.Service;
 
 namespace Training_SDS_StudentManagement.Data
 {

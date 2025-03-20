@@ -1,4 +1,6 @@
-﻿namespace Training_SDS_StudentManagement.Model.DataSeeding
+﻿using Training_SDS_StudentManagement.Model;
+
+namespace Training_SDS_StudentManagement.Service
 {
     public class DataSeeding
     {

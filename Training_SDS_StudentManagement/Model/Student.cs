@@ -9,7 +9,7 @@ namespace Training_SDS_StudentManagement.Model
         public DateTime DateOfBirth { get; set; }
         public string Address { get; set; }
         [Column("ClassId")]
-        public Classes Classes { get; set; }
+        public virtual Classes? Classes { get; set; }
 
     }
 }
