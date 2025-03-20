@@ -7,7 +7,8 @@ namespace Training_SDS_StudentManagement.Model
     {
         public string Name { get; set; }
         public string Subject { get; set; }
-        [Column("TeacherId")]
-        public Teacher Teacher { get; set; }
+        
+        public long TeacherId { get; set; }
+        public Teacher? Teacher { get; set; }
     }
 }

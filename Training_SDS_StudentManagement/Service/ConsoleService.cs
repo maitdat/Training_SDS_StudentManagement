@@ -4,7 +4,7 @@ using Training_SDS_StudentManagement.Model;
 
 namespace Training_SDS_StudentManagement.Service
 {
-    public class ConsoleService
+    public class ConsoleService 
     {
         private List<Student> students = new List<Student>();
         private List<Classes> classes = new List<Classes>()
@@ -107,6 +107,8 @@ namespace Training_SDS_StudentManagement.Service
             }
 
             students.Add(student);
+
+
             Console.WriteLine("Thêm thành công");
         }
 
