@@ -51,6 +51,7 @@ app.MapRazorComponents<App>()
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapGrpcService<MyService>();
+    endpoints.MapGrpcService<StudentService>();
     // ...
 });
 

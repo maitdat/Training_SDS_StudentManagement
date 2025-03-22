@@ -1,30 +1,25 @@
-﻿using System.Runtime.Serialization;
+﻿using Shared.DTOs.RequestModel;
+using Shared.DTOs.ResponseModel;
+using System.ServiceModel;
 
 namespace Shared
 {
+    [ServiceContract]
     public interface IStudentService
     {
-        //Task<> GetStudentById(int id);
-    }
+        //[OperationContract]
+        //void AddStudent(StudentRequest request);
 
+        //[OperationContract]
+        //void UpdateStudent(StudentRequest request);
 
-    [DataContract]
-    public class a
-    {
-        [DataMember(Order = 1)]
-        public string NewText { get; set; }
+        //[OperationContract]
+        //void DeleteStudent(int id);
 
-        [DataMember(Order = 2)]
-        public int NewValue { get; set; }
-    }
+        //[OperationContract]
+        //StudentResponse GetStudent(int id);
 
-    [DataContract]
-    public class n
-    {
-        [DataMember(Order = 1)]
-        public string Text { get; set; }
-
-        [DataMember(Order = 2)]
-        public int Value { get; set; }
+        [OperationContract]
+        List<StudentResponse> GetStudents();
     }
 }

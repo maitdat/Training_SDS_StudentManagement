@@ -1,0 +1,62 @@
+﻿@using AntDesign
+@using Shared.DTOs.RequestModel;
+@using Shared.DTOs.ResponseModel;
+@using Shared
+@page "/student/list"
+
+<h3>Student List</h3>
+@* 
+<Table TItem="StudentResponse" DataSource="@_response">
+    <PropertyColumn Property="c => c.Name">
+        <a>@context.Name</a>
+    </PropertyColumn>
+    <PropertyColumn Property="c => c.DateOfBirth">
+        <span>@context.DateOfBirth.ToShortDateString()</span>
+    </PropertyColumn>
+    <PropertyColumn Property="c => c.Address">
+        <span>@context.Address</span>
+    </PropertyColumn>
+    <PropertyColumn Property="c => c.Class.Name">
+        <span>@context.Class.Name</span>
+    </PropertyColumn>
+    <PropertyColumn Property="c => c.TeacherName">
+        <span>@context.TeacherName</span>
+    </PropertyColumn>
+    <ActionColumn Title="Action">
+        <Space Size="SpaceSize.Middle">
+            <SpaceItem>
+                <a>Invite @context.Name</a>
+            </SpaceItem>
+            <SpaceItem>
+                <a>Delete</a>
+            </SpaceItem>
+        </Space>
+    </ActionColumn>
+</Table> *@
+
+@inject IStudentService StudentService;
+@code
+{
+    List<StudentResponse> _response = new List<StudentResponse>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var x = 1;
+            var newStudent = new StudentRequest
+            {
+                Id = 1,
+                ClassId = 1,
+                Name = "John Doe",
+                DateOfBirth = new DateTime(2000, 1, 1),
+                Address = "123 Main St"
+            };
+            _response = StudentService.GetStudents();
+        }
+        catch(Exception ex)
+        {
+            Console.WriteLine($"Error fetching students: {ex.Message}");
+        }
+    }
+}

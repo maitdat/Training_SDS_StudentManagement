@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace SeverGrpc_NHibernate.Migrations
 {
     /// <inheritdoc />
-    public partial class createdatabase : Migration
+    public partial class createdb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,7 +15,7 @@ namespace SeverGrpc_NHibernate.Migrations
                 name: "Teacher",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -26,20 +26,20 @@ namespace SeverGrpc_NHibernate.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Classes",
+                name: "Class",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Subject = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TeacherId = table.Column<long>(type: "bigint", nullable: false)
+                    TeacherId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Classes", x => x.Id);
+                    table.PrimaryKey("PK_Class", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Classes_Teacher_TeacherId",
+                        name: "FK_Class_Teacher_TeacherId",
                         column: x => x.TeacherId,
                         principalTable: "Teacher",
                         principalColumn: "Id",
@@ -50,26 +50,26 @@ namespace SeverGrpc_NHibernate.Migrations
                 name: "Student",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ClassId = table.Column<long>(type: "bigint", nullable: true)
+                    ClassId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Student", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Student_Classes_ClassId",
+                        name: "FK_Student_Class_ClassId",
                         column: x => x.ClassId,
-                        principalTable: "Classes",
+                        principalTable: "Class",
                         principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Classes_TeacherId",
-                table: "Classes",
+                name: "IX_Class_TeacherId",
+                table: "Class",
                 column: "TeacherId");
 
             migrationBuilder.CreateIndex(
@@ -85,7 +85,7 @@ namespace SeverGrpc_NHibernate.Migrations
                 name: "Student");
 
             migrationBuilder.DropTable(
-                name: "Classes");
+                name: "Class");
 
             migrationBuilder.DropTable(
                 name: "Teacher");

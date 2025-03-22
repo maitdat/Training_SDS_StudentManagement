@@ -7,7 +7,7 @@ namespace SeverGrpc_NHibernate.Model
         public virtual string Name { get; set; }
         public virtual string Subject { get; set; }
         
-        public virtual long TeacherId { get; set; }
+        public virtual int TeacherId { get; set; }
         public virtual Teacher? Teacher { get; set; }
         public virtual IList<Student> Students { get; set; } = new List<Student>();
     }

@@ -1,4 +1,4 @@
-﻿@page "/counter"
+﻿@page "/myService"
 @using Shared
 
 <EditForm Model="@request" OnValidSubmit="Submit" FormName="Name">
@@ -24,4 +24,5 @@
 	{
 		this.result = await MyService.DoSomething(request);
 	}
+
 }

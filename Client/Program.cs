@@ -1,4 +1,4 @@
-using Client.Components;
+﻿using Client.Components;
 using Grpc.Net.Client;
 using Grpc.Net.Client.Web;
 using Microsoft.AspNetCore.Components;
@@ -37,8 +37,16 @@ builder.Services.AddTransient<IMyService>(services =>
     return grpcChannel.CreateGrpcService<IMyService>();
 });
 
+builder.Services.AddTransient<IStudentService>(services =>
+{
+    var grpcChannel = services.GetRequiredService<GrpcChannel>();
+    return grpcChannel.CreateGrpcService<IStudentService>();
+});
+
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+builder.Services.AddAntDesign();
 
 var app = builder.Build();
 

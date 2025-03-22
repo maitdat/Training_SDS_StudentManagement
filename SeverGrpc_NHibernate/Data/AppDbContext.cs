@@ -12,7 +12,7 @@ namespace SeverGrpc_NHibernate.Data
 
         public DbSet<Student> Student { get; set; } = default!;
         public DbSet<Teacher> Teacher { get; set; } = default!;
-        public DbSet<Class> Classes { get; set; } = default!;
+        public DbSet<Class> Class { get; set; } = default!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
