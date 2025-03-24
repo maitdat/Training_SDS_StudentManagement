@@ -1,4 +1,6 @@
-﻿using System.Linq.Expressions;
+﻿using FluentNHibernate.Data;
+using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 using ISession = NHibernate.ISession;
 
 namespace SeverGrpc_NHibernate.RepositoryNHibernate
@@ -108,6 +110,31 @@ namespace SeverGrpc_NHibernate.RepositoryNHibernate
             return _session.Query<T>().Count();
         }
 
+        public async Task<(List<T> Items, int TotalCount)> GetPagedListAsync(
+        Expression<Func<T, bool>>? filter = null,
+        Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
+        int pageIndex = 1,
+        int pageSize = 10)
+        {
+            IQueryable<T> query = _session.Query<T>();
+
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
+
+            int totalCount = await query.CountAsync();
+
+            if (orderBy != null)
+            {
+                query = orderBy(query);
+            }
+
+            query = query.Skip((pageIndex - 1) * pageSize).Take(pageSize);
+
+            var items = await query.ToListAsync();
+            return (items, totalCount);
+        }
         #endregion
     }
 

@@ -2,20 +2,25 @@
 @using Shared.DTOs.RequestModel;
 @using Shared.DTOs.ResponseModel;
 @using Shared
-@page "/student/list"
+@page "/student"
 @using Pages.Student
 
 <h3>Student List</h3>  
 <GridRow>
-    <GridCol Span="12">
+    <GridCol Span="24">
+
+        <CreateOrUpdateDialog @ref="_createOrUpdateModal" OnSuccess="LoadData" />
+    </GridCol>
+    <GridCol Span="24">
         <Button type="ButtonType.Primary" OnClick="OpenModal">Add Student</Button>
 
         <CreateOrUpdateDialog @ref="_createOrUpdateModal" OnSuccess="LoadData" />
     </GridCol>  
 
-
 </GridRow>
+
 <Table TItem="StudentResponse" DataSource="@_response">
+    
     <PropertyColumn Property="c => c.Name">
         <a>@context.Name</a>
     </PropertyColumn>

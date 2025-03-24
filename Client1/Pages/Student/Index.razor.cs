@@ -5,7 +5,7 @@ using Shared.DTOs.ResponseModel;
 
 namespace Client1.Pages.Student
 {
-    public partial class ListStudent : ComponentBase
+    public partial class Index : ComponentBase
     {
         [Inject]
         private IStudentService _studentService { get;set; } = null!;

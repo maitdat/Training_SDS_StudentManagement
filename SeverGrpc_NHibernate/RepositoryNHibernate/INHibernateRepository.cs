@@ -1,4 +1,5 @@
-﻿using System.Linq.Expressions;
+﻿using FluentNHibernate.Data;
+using System.Linq.Expressions;
 
 namespace SeverGrpc_NHibernate.RepositoryNHibernate
 {
@@ -23,5 +24,10 @@ namespace SeverGrpc_NHibernate.RepositoryNHibernate
         T FindBy(int id);
 
         IQueryable<T> FilterBy(Expression<Func<T, bool>> expression);
+        Task<(List<T> Items, int TotalCount)> GetPagedListAsync(
+        Expression<Func<T, bool>>? filter = null,
+        Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
+        int pageIndex = 1,
+        int pageSize = 10);
     }
 }
