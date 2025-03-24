@@ -11,7 +11,7 @@ namespace SeverGrpc_NHibernate.Mapping
             Map(x => x.Name).Not.Nullable();
             Map(x => x.DateOfBirth).Not.Nullable();
             Map(x => x.Address).Not.Nullable();
-            References(x => x.Class).Not.Nullable();
+            References(x => x.Class,"ClassId").Not.Nullable();
         }
     }
 }

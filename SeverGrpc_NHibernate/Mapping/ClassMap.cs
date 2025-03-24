@@ -10,8 +10,7 @@ namespace SeverGrpc_NHibernate.Mapping
             Id(x => x.Id).GeneratedBy.Identity();
             Map(x => x.Name).Not.Nullable();
             Map(x => x.Subject).Not.Nullable();
-            Map(x => x.TeacherId).Not.Nullable();
-            References(x => x.Teacher).Nullable();
+            References(x => x.Teacher,"TeacherId").Nullable();
             HasMany(x => x.Students).Cascade.All().Inverse();
         }
     }

@@ -1,0 +1,39 @@
+﻿@page "/student/createorupdate"
+@using System.ComponentModel.DataAnnotations
+@using System.ComponentModel.DataAnnotations.Schema
+@using Shared.DTOs.RequestModel
+@using System.Text.Json;
+
+@{
+    RenderFragment footer = @<Template>
+    </Template>;
+}
+
+<Modal Title="@Title" 
+    @bind-Visible="@_visible"
+       Footer="@footer">
+    <Form Model="@_student"
+          OnFinish="OnFinish"
+          OnFinishFailed="OnFinishFailed"
+          LabelColSpan="8"
+          WrapperColSpan="16">
+        <FormItem Label="Họ tên">
+            <Input @bind-Value="@context.Name" />
+        </FormItem>
+        <FormItem Label="Ngày sinh">
+            <InputDate @bind-Value="@context.DateOfBirth" />
+        </FormItem>
+        <FormItem Label="Địa chỉ"  WrapperColSpan="16">
+            <Input @bind-Value="@context.Address" />
+        </FormItem>
+        <FormItem Label="Lớp" WrapperColSpan="16">
+            <Input @bind-Value="@context.ClassId" />
+        </FormItem>
+        <FormItem WrapperColOffset="8" WrapperColSpan="8">
+            <Button Type="ButtonType.Primary" HtmlType="submit" >
+                Submit
+            </Button>
+        </FormItem>
+    </Form>
+</Modal>
+

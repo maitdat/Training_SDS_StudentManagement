@@ -7,19 +7,19 @@ namespace Shared
     [ServiceContract]
     public interface IStudentService
     {
-        //[OperationContract]
-        //void AddStudent(StudentRequest request);
-
-        //[OperationContract]
-        //void UpdateStudent(StudentRequest request);
-
-        //[OperationContract]
-        //void DeleteStudent(int id);
-
-        //[OperationContract]
-        //StudentResponse GetStudent(int id);
+        [OperationContract]
+        Task AddStudentAsync(StudentRequest request);
 
         [OperationContract]
-        List<StudentResponse> GetStudents();
+        Task UpdateStudentAsync(StudentRequest request);
+
+        [OperationContract]
+        Task DeleteStudentAsync(IdRequest request);
+
+        [OperationContract]
+        StudentResponse GetStudent(IdRequest request);
+
+        [OperationContract]
+        Task<List<StudentResponse>> GetStudentsAsync();
     }
 }

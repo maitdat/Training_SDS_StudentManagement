@@ -4,10 +4,19 @@ using ProtoBuf.Grpc.Server;
 using SeverGrpc_NHibernate.Components;
 using SeverGrpc_NHibernate.Data;
 using SeverGrpc_NHibernate.NHibernateHelper;
+using SeverGrpc_NHibernate.RepositoryNHibernate;
 using SeverGrpc_NHibernate.Service;
 using ISession = NHibernate.ISession;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        policy => policy.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader());
+});
 
 //EF core
 builder.Services.AddDbContextFactory<AppDbContext>(options =>
@@ -17,6 +26,7 @@ builder.Services.AddDbContextFactory<AppDbContext>(options =>
 builder.Services.AddSingleton<ISessionFactory>(SessionFactoryBuilder.CreateSessionFactory());
 builder.Services.AddScoped<ISession>(sp => sp.GetRequiredService<ISessionFactory>().OpenSession());
 
+builder.Services.AddTransient(typeof(INHibernateRepository<>), typeof(NHibernateRepository<>));
 
 builder.Services.AddCodeFirstGrpc(config => { config.ResponseCompressionLevel = System.IO.Compression.CompressionLevel.Optimal; });
 
@@ -27,6 +37,7 @@ builder.Services.AddRazorComponents()
 
 var app = builder.Build();
 
+app.UseCors("AllowAll");
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
@@ -44,7 +55,6 @@ app.UseAntiforgery();
 app.UseGrpcWeb(new GrpcWebOptions() { DefaultEnabled = true });
 
 
-
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
 
@@ -52,6 +62,7 @@ app.UseEndpoints(endpoints =>
 {
     endpoints.MapGrpcService<MyService>();
     endpoints.MapGrpcService<StudentService>();
+    endpoints.MapGrpcService<ClassService>();
     // ...
 });
 
