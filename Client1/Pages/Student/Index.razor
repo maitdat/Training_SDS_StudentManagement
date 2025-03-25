@@ -5,7 +5,11 @@
 @page "/student"
 @using Pages.Student
 
-<h3>Student List</h3>  
+<Space>
+    <Input Placeholder="Search by ID" @bind-Value="StudentPaginationRequest.BasePaginationRequest.Keyword" />
+    <Button Type="ButtonType.Primary" @onclick="ApplyFilters">Search</Button>
+</Space>
+
 <GridRow>
     <GridCol Span="24">
 
@@ -19,32 +23,47 @@
 
 </GridRow>
 
-<Table TItem="StudentResponse" DataSource="@_response">
-    
-    <PropertyColumn Property="c => c.Name">
+
+<Table TItem="StudentResponse" DataSource="@_response.Data" 
+       @bind-PageIndex="StudentPaginationRequest.BasePaginationRequest.PageNo"
+       @bind-PageSize="StudentPaginationRequest.BasePaginationRequest.PageSize"
+       Total="@_response.TotalItems"
+       OnChange="HandleTableChange">
+
+    <PropertyColumn Property="c => c.Id" Title="ID">
+        <span>@context.Id</span>
+    </PropertyColumn>
+
+    <PropertyColumn Property="c => c.Name" Title="Name" Sortable="true">
         <a>@context.Name</a>
     </PropertyColumn>
-    <PropertyColumn Property="c => c.DateOfBirth">
+
+    <PropertyColumn Property="c => c.DateOfBirth" Title="Date of Birth">
         <span>@context.DateOfBirth.ToShortDateString()</span>
     </PropertyColumn>
-    <PropertyColumn Property="c => c.Address">
+
+    <PropertyColumn Property="c => c.Address" Title="Address">
         <span>@context.Address</span>
     </PropertyColumn>
-    <PropertyColumn Property="c => c.Class.Name" Title="Class name">
+
+    <PropertyColumn Property="c => c.Class.Name" Title="Class Name">
         <span>@context.Class.Name</span>
     </PropertyColumn>
-    <PropertyColumn Property="c => c.TeacherName">
+
+    <PropertyColumn Property="c => c.TeacherName" Title="Teacher Name">
         <span>@context.TeacherName</span>
     </PropertyColumn>
+
     <ActionColumn Title="Action">
-        <Popconfirm Title="Sure to delete?"
-                    OnConfirm="()=> Delete(context.Id)"
-                    OkText="Yes"
-                    CancelText="No">
+        <Popconfirm Title="Sure to delete?" OnConfirm="()=> Delete(context.Id)"
+                    OkText="Yes" CancelText="No">
             <Button Danger>Delete</Button>
         </Popconfirm>
-        <Button type="ButtonType.Primary" @onclick="()=> OpenUpdateModal(context) ">Update</Button>
+        <Button Type="ButtonType.Primary" @onclick="()=> OpenUpdateModal(context)">Update</Button>
     </ActionColumn>
-</Table> 
+</Table>
+
+<!-- Filter & Search -->
+
 
 

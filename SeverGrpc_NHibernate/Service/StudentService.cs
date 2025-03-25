@@ -1,4 +1,6 @@
 ﻿using Azure.Core;
+using Common;
+using Microsoft.IdentityModel.Tokens;
 using SeverGrpc_NHibernate.Model;
 using SeverGrpc_NHibernate.RepositoryNHibernate;
 using Shared;
@@ -109,5 +111,61 @@ namespace SeverGrpc_NHibernate.Service
 
             return await Task.FromResult( studentResponses); 
         }
+
+        public async Task<BasePaginationResponse<StudentResponse>> GetPaginationAsync(StudentPaginationRequest request)
+        {
+            var studentsQuery = _studentRepository.All();
+
+            // Filtering by student
+            if (!request.BasePaginationRequest.Keyword.IsNullOrEmpty())
+            {
+                studentsQuery = studentsQuery.Where(s => s!.Id ==  int.Parse(request.BasePaginationRequest.Keyword));
+            }
+
+            // Sorting
+            if (request.SortByName != null)
+            {
+                if (request.SortByName == Sort.Asc)
+                {
+                    studentsQuery = studentsQuery.OrderBy(x => x.Name);
+                }
+                else if (request.SortByName == Sort.Desc)
+                {
+                    studentsQuery = studentsQuery.OrderByDescending(x => x.Name);
+                }
+            }
+
+            // Pagination
+            var totalItems = studentsQuery.Count();
+            var studentsPaged = studentsQuery
+                .Skip((request.BasePaginationRequest.PageNo - 1) * request.BasePaginationRequest.PageSize)
+                .Take(request.BasePaginationRequest.PageSize)
+                .ToList();
+
+            var studentResponses = studentsPaged.Select(student => new StudentResponse
+            {
+                Id = student.Id,
+                Name = student.Name,
+                DateOfBirth = student.DateOfBirth,
+                Address = student.Address,
+                Class = new ClassResponse
+                {
+                    Id = student.Class.Id,
+                    Name = student.Class.Name,
+                    Subject = student.Class.Subject
+                },
+                TeacherName = student.Class.Teacher.Name
+            }).ToList();
+
+            var res = new BasePaginationResponse<StudentResponse>(
+                request.BasePaginationRequest.PageNo,
+                request.BasePaginationRequest.PageSize,
+                studentResponses,
+                totalItems
+            );
+
+            return res;
+        }
+
     }
 }

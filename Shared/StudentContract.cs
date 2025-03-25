@@ -21,5 +21,7 @@ namespace Shared
 
         [OperationContract]
         Task<List<StudentResponse>> GetStudentsAsync();
+        [OperationContract]
+        Task<BasePaginationResponse<StudentResponse>> GetPaginationAsync(StudentPaginationRequest request);
     }
 }

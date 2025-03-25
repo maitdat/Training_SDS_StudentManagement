@@ -1,4 +1,5 @@
-﻿using System.Runtime.Serialization;
+﻿using Common;
+using System.Runtime.Serialization;
 
 namespace Shared.DTOs.RequestModel
 {
@@ -19,5 +20,15 @@ namespace Shared.DTOs.RequestModel
 
         [DataMember(Order = 5)]
         public string Address { get; set; }
+    }
+
+    [DataContract]
+    public class StudentPaginationRequest 
+    {
+        [DataMember(Order = 1)]
+        public Sort? SortByName { get; set; }
+        [DataMember(Order = 2)]
+        public BasePaginationRequest BasePaginationRequest { get; set; } = new BasePaginationRequest();
+
     }
 }

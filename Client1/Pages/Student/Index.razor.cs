@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using AntDesign;
+using AntDesign.TableModels;
+using Common;
+using Microsoft.AspNetCore.Components;
 using Shared;
 using Shared.DTOs.RequestModel;
 using Shared.DTOs.ResponseModel;
@@ -8,26 +11,25 @@ namespace Client1.Pages.Student
     public partial class Index : ComponentBase
     {
         [Inject]
-        private IStudentService _studentService { get;set; } = null!;
+        private IStudentService _studentService { get; set; } = null!;
 
-        List<StudentResponse> _response = new List<StudentResponse>();
+        private StudentPaginationRequest StudentPaginationRequest = new StudentPaginationRequest();
+        BasePaginationResponse<StudentResponse> _response = new BasePaginationResponse<StudentResponse>();
         private CreateOrUpdateDialog? _createOrUpdateModal;
-
-        protected override async Task OnInitializedAsync()
-        {
-            try
-            {
-                await LoadData();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error fetching students: {ex.Message}");
-            }
-        }
 
         private async Task LoadData()
         {
-            _response = await _studentService.GetStudentsAsync();
+            try
+            {
+                
+                _response = await _studentService.GetPaginationAsync(StudentPaginationRequest);
+                StateHasChanged();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+           
         }
 
         private async Task Delete(int id)
@@ -57,5 +59,33 @@ namespace Client1.Pages.Student
             };
             _createOrUpdateModal?.ShowModal();
         }
+        private async Task HandleTableChange(QueryModel<StudentResponse> query)
+        {
+            StudentPaginationRequest.BasePaginationRequest.PageNo = query.PageIndex;
+            StudentPaginationRequest.BasePaginationRequest.PageSize = query.PageSize; 
+            var sortColumn = query.SortModel?.FirstOrDefault(); 
+
+            if (sortColumn != null && sortColumn.SortDirection == SortDirection.Ascending)
+            {
+                StudentPaginationRequest.SortByName = Sort.Asc;
+            } 
+            else if (sortColumn != null && sortColumn.SortDirection == SortDirection.Descending)
+            {
+                StudentPaginationRequest.SortByName = Sort.Desc;
+            }
+            else
+            {
+                StudentPaginationRequest.SortByName = Sort.None;
+            }
+
+                await LoadData();
+        }
+
+        private async Task ApplyFilters()
+        {
+            StudentPaginationRequest.BasePaginationRequest.PageNo = 1;
+            await LoadData();
+        }
+
     }
 }

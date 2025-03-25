@@ -1,6 +1,7 @@
 ﻿@using System.ComponentModel.DataAnnotations
 @using System.ComponentModel.DataAnnotations.Schema
 @using Shared.DTOs.RequestModel
+@using Shared.DTOs.ResponseModel
 @using System.Text.Json;
 
 @{
@@ -9,13 +10,13 @@
 }
 
 <Modal Title="@Title" 
-    @bind-Visible="@_visible"
-       Footer="@footer">
+@bind-Visible="@_visible"
+Footer="@footer">
     <Form Model="@_student"
-          OnFinish="OnFinish"
-          OnFinishFailed="OnFinishFailed"
-          LabelColSpan="8"
-          WrapperColSpan="16">
+    OnFinish="OnFinish"
+    OnFinishFailed="OnFinishFailed"
+    LabelColSpan="8"
+    WrapperColSpan="16">
         <FormItem Label="Họ tên">
             <Input @bind-Value="@context.Name" />
         </FormItem>
@@ -26,7 +27,13 @@
             <Input @bind-Value="@context.Address" />
         </FormItem>
         <FormItem Label="Lớp" WrapperColSpan="16">
-            <Input @bind-Value="@context.ClassId" />
+            <Select 
+                DataSource="@_classes"
+                @bind-Value="_student.ClassId" Placeholder="Choose class"
+                ItemValue="c=>c.Id"
+                ItemLabel="c=>c.Name"
+                EnableSearch>
+            </Select>
         </FormItem>
         <FormItem WrapperColOffset="8" WrapperColSpan="8">
             <Button Type="ButtonType.Primary" HtmlType="submit" >

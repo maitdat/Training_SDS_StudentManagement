@@ -29,11 +29,6 @@ namespace SeverGrpc_NHibernate.Utilities
             return sortType == 0 ? query : sortType == Sort.Asc ? query.OrderBy(orderByExpression) : query.OrderByDescending(orderByExpression);
         }
 
-        public static string GetUrlAnhDaiDien(string urlPath, string userName)
-        {
-            return urlPath + "api/PhatTuUser/AnhDaiDien/" + userName;
-        }
-
         public static bool CheckHasSpecialChar(string input)
         {
             var charMathInPath = Path.GetInvalidFileNameChars();

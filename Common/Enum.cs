@@ -8,7 +8,8 @@ namespace Common
 {
     public enum Sort
     {
-        Asc = 0,
-        Desc = 1
+        None=0,
+        Asc = 1,
+        Desc = 2
     }
 }
