@@ -3,6 +3,7 @@ using Common;
 using Microsoft.IdentityModel.Tokens;
 using SeverGrpc_NHibernate.Model;
 using SeverGrpc_NHibernate.RepositoryNHibernate;
+using SeverGrpc_NHibernate.Utilities;
 using Shared;
 using Shared.DTOs.RequestModel;
 using Shared.DTOs.ResponseModel;
@@ -137,9 +138,8 @@ namespace SeverGrpc_NHibernate.Service
 
             // Pagination
             var totalItems = studentsQuery.Count();
-            var studentsPaged = studentsQuery
-                .Skip((request.BasePaginationRequest.PageNo - 1) * request.BasePaginationRequest.PageSize)
-                .Take(request.BasePaginationRequest.PageSize)
+            var studentsPaged = 
+                studentsQuery.ApplyPaging(request.BasePaginationRequest.PageNo, request.BasePaginationRequest.PageSize)
                 .ToList();
 
             var studentResponses = studentsPaged.Select(student => new StudentResponse

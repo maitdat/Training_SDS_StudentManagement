@@ -1,7 +1,10 @@
 ﻿using AntDesign;
 using AntDesign.TableModels;
+using BlazorDownloadFile;
 using Common;
 using Microsoft.AspNetCore.Components;
+using OfficeOpenXml;
+using SeverGrpc_NHibernate.Utilities;
 using Shared;
 using Shared.DTOs.RequestModel;
 using Shared.DTOs.ResponseModel;
@@ -12,6 +15,7 @@ namespace Client1.Pages.Student
     {
         [Inject]
         private IStudentService _studentService { get; set; } = null!;
+        [Inject] private IBlazorDownloadFileService DownloadFileService { get; set; } = null!;
 
         private StudentPaginationRequest StudentPaginationRequest = new StudentPaginationRequest();
         BasePaginationResponse<StudentResponse> _response = new BasePaginationResponse<StudentResponse>();
@@ -87,5 +91,32 @@ namespace Client1.Pages.Student
             await LoadData();
         }
 
+        private async Task ExportExcel()
+        {
+            StudentPaginationRequest.BasePaginationRequest.PageSize = 500;
+            var data =await _studentService.GetPaginationAsync(StudentPaginationRequest);
+            string sheetName = "Student List";
+            List<string> headers = new() { "ID", "Name", "Date of Birth", "Address", "Class", "Teacher" };
+
+            // Dữ liệu sinh viên (BodyExcel)
+            List<List<string>> body = data.Data.Select(s => new List<string>
+            {
+                s.Id.ToString(),
+                s.Name,
+                s.DateOfBirth.ToString("dd-MM-yyyy"), 
+                s.Address,
+                s.Class?.Name ?? "N/A", 
+                s.TeacherName
+            }).ToList();
+
+            StudentPaginationRequest.BasePaginationRequest.PageSize = 10;
+
+            ExcelPackage excelFile = Utilities.ExportExcel(sheetName, headers, body, "A1", 2, 3);
+
+            byte[] fileBytes = excelFile.GetAsByteArray();
+            await DownloadFileService.DownloadFile("Students.xlsx", fileBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        }
+
+      
     }
 }

@@ -6,6 +6,7 @@ using Shared;
 using Grpc.Net.Client;
 using Grpc.Net.Client.Web;
 using ProtoBuf.Grpc.Client;
+using BlazorDownloadFile;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -31,7 +32,7 @@ builder.Services.AddSingleton(services =>
             HttpHandler = httpHandler,
         });
 });
-
+builder.Services.AddBlazorDownloadFile();
 
 builder.Services.AddTransient<IMyService>(services =>
 {

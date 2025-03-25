@@ -11,16 +11,15 @@
 </Space>
 
 <GridRow>
-    <GridCol Span="24">
-
-        <CreateOrUpdateDialog @ref="_createOrUpdateModal" OnSuccess="LoadData" />
-    </GridCol>
-    <GridCol Span="24">
+    <GridCol Offset="16" Span="4">
         <Button type="ButtonType.Primary" OnClick="OpenModal">Add Student</Button>
 
         <CreateOrUpdateDialog @ref="_createOrUpdateModal" OnSuccess="LoadData" />
     </GridCol>  
+    <GridCol  Span="4">
+        <Button type="ButtonType.Primary" OnClick="ExportExcel">Export Excel</Button>
 
+    </GridCol>
 </GridRow>
 
 

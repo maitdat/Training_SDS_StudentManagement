@@ -1,25 +1,37 @@
-﻿@page "/"
+﻿@using AntDesign.Charts
+@page "/"
 
-<Line Data="data" Config="config" />
+@using Title = AntDesign.Charts.Title
 
-@code {
-    object[] data = new object[] {
-        new  { year = "1991", value = 3 },
-        new  { year = "1992", value = 4 },
-        new  { year = "1993", value = 3.5 },
-        new  { year = "1994", value = 5 },
-        new  { year = "1995", value = 4.9 },
-        new  { year = "1996", value = 6 },
-        new  { year = "1997", value = 7 },
-        new  { year = "1998", value = 9 },
-        new  { year = "1999", value = 13 },
-    };
 
-    LineConfig config = new LineConfig()
-        {
-            Padding = "auto",
-            XField = "year",
-            YField = "value",
-            Smooth = true,
-        };
-}
+<Tabs>
+    <TabPane Key="1">
+        <TabTemplate>Thống kê học sinh theo lớp</TabTemplate>
+        <ChildContent>
+            @if (data == null || !data.Any())
+            {
+
+                <Spin Tip="Đang tải dữ liệu..." />
+            }
+            else
+            {
+                <Bar Data="data2" Config="config2" />
+            }
+        </ChildContent>
+    </TabPane>
+    <TabPane Key="2">
+        <TabTemplate>Thống kê giáo viên theo các lớp</TabTemplate>
+        <ChildContent>
+            @if (data == null || !data.Any())
+            {
+                <Spin Tip="Đang tải dữ liệu..." />
+            }
+            else
+            {
+                <Bar Data="data" Config="config1" />
+            }
+        </ChildContent>
+    </TabPane>
+    
+</Tabs>
+
